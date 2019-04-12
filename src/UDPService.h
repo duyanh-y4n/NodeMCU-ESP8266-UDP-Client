@@ -29,5 +29,5 @@ class UDPService
     void setupMulticastServer(IPAddress multicastHostIp, int MulticastPort);
     char* getMessageFromMulticastServer(int bufferLength);
 
-    char* getMessageFromServer(int bufferLength);
+    char* getMessageFromServer(int bufferLenght);
 };

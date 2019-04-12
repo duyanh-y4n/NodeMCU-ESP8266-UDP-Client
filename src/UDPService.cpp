@@ -36,14 +36,16 @@ char *UDPService::getPrivateMessageFromServer(int bufferLength)
 {
     //TODO: refactor, get from server
     int packetSize = this->Udp.parsePacket();
-    char incomingPacket[255];
+    char incomingPacket[DEFAULT_MAX_BUFFER_LENGTH];
     if (packetSize)
     {
+        //BUG: cant remove this log??? it will cause data loss
         Serial.printf("Empfängt %d bytes von %s, port %d\n", packetSize, Udp.remoteIP().toString().c_str(), Udp.remotePort());
+        Serial.println();
         int len = this->Udp.read(incomingPacket, bufferLength);
         if (len > 0)
         {
-            incomingPacket[len] = 0;
+            incomingPacket[len] = 0x00;
         }
         Serial.printf("UDP Paket Inhalt: %s\n", incomingPacket);
         return incomingPacket;
@@ -61,16 +63,17 @@ void UDPService::setupMulticastServer(IPAddress multicastHostIp, int multicastPo
 char *UDPService::getMessageFromMulticastServer(int bufferLength)
 {
     int packetSize = this->UdpMulti.parsePacket();
-    char incomingPacket[255];
+    char incomingPacket[DEFAULT_MAX_BUFFER_LENGTH];
     if (packetSize)
     {
-        // Serial.printf("Empfängt %d bytes von %s, port %d\n", packetSize, Udp.remoteIP().toString().c_str(), Udp.remotePort());
+        //BUG: cant remove this log??? it will cause data loss
+        Serial.printf("Empfängt %d bytes von %s, port %d\n", packetSize, Udp.remoteIP().toString().c_str(), Udp.remotePort());
         int len = this->UdpMulti.read(incomingPacket, bufferLength);
         if (len > 0)
         {
-            incomingPacket[len] = 0;
+            incomingPacket[len] = 0x00;
         }
-        // Serial.printf("UDP Paket Inhalt: %s\n", incomingPacket);
+        Serial.printf("UDP Paket Inhalt: %s\n", incomingPacket);
         return incomingPacket;
     }
     return NULL;
@@ -79,9 +82,9 @@ char *UDPService::getMessageFromMulticastServer(int bufferLength)
 char *UDPService::getMessageFromServer(int bufferLength)
 {
     //last initiated message will have higher priority and be caught
-    char *receivedMulti = getMessageFromMulticastServer(bufferLength);
-    char *receivedPrivate = getPrivateMessageFromServer(bufferLength);
-
+    char* receivedMulti = getMessageFromMulticastServer(bufferLength);
+    char* receivedPrivate = getPrivateMessageFromServer(bufferLength);
+    // TODO: fix bug, assignment sometimes not working correctly!!! missting packet
     if (receivedMulti != NULL)
     {
         return receivedMulti;

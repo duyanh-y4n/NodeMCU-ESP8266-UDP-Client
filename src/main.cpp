@@ -9,7 +9,7 @@ const char *SSID = "TP-LINK_D8BA";
 const char *PASS = "35581338";
 ////////// UDP Konfigration ///////////////
 const int LOCAL_LISTEN_PORT = 8080; //UDP port
-const int MAX_BUFFER_LENGTH = 20;
+const int MAX_BUFFER_LENGTH = 25;
 
 IPAddress multicastIP(224, 0, 0, 0); //IP des Multicast
 const int MULTICAST_PORT = 8081;     //IP des Multicast
@@ -19,7 +19,6 @@ int SERVER_PORT;                     //PORT des Servers
 /////////// WIFI Und UDP erstellen/////////
 WifiService wifi(SSID, PASS);
 UDPService Udp;
-char* receivedMessage;
 
 void setup()
 {
@@ -27,7 +26,7 @@ void setup()
   Serial.begin(9600);
   wifi.connectToWifi();
   Udp.setupListenPort(LOCAL_LISTEN_PORT);
-  Udp.setupMulticastServer(multicastIP,MULTICAST_PORT);
+  Udp.setupMulticastServer(multicastIP, MULTICAST_PORT);
   Udp.setupServer(multicastIP, MULTICAST_PORT);
   // Udp.sendToServer("Hi");
 }
@@ -35,10 +34,22 @@ void setup()
 void loop()
 {
   // put your main code here, to run repeatedly:
+  char *receivedMessage;
+
   receivedMessage = Udp.getMessageFromServer(MAX_BUFFER_LENGTH);
-  if (receivedMessage!=NULL) {
+  if (receivedMessage != NULL)
+  {
     Serial.print("Empfängt: ");
     Serial.println(receivedMessage);
+    for (int i = 0; i < MAX_BUFFER_LENGTH; i++)
+    {
+      /* code */
+      Serial.print(receivedMessage[i],HEX);
+      Serial.print(" ");
+    }
+      Serial.println();
+
+    
   }
   Serial.println("running process 1");
   delay(2000);
@@ -46,9 +57,5 @@ void loop()
   delay(2000);
   Serial.println("running process 3");
   delay(2000);
-  receivedMessage = Udp.getMessageFromServer(MAX_BUFFER_LENGTH);
-  if (receivedMessage!=NULL) {
-    Serial.print("Empfängt: ");
-    Serial.println(receivedMessage);
-  }
+
 }
