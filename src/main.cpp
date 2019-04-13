@@ -20,20 +20,18 @@ int SERVER_PORT;                     //PORT des Servers
 WifiService wifi(SSID, PASS);
 UDPService Udp;
 
+
+// Testprogramm zum Hören vom server
 void setup()
 {
-  // put your setup code here, to run once:
   Serial.begin(9600);
   wifi.connectToWifi();
   Udp.setupListenPort(LOCAL_LISTEN_PORT);
   Udp.setupMulticastServer(multicastIP, MULTICAST_PORT);
-  Udp.setupServer(multicastIP, MULTICAST_PORT);
-  // Udp.sendToServer("Hi");
 }
 
 void loop()
 {
-  // put your main code here, to run repeatedly:
   char *receivedMessage;
 
   receivedMessage = Udp.getMessageFromServer(MAX_BUFFER_LENGTH);
@@ -41,9 +39,10 @@ void loop()
   {
     Serial.print("Empfängt: ");
     Serial.println(receivedMessage);
+
+    // HEX Code der empfängten Daten
     for (int i = 0; i < MAX_BUFFER_LENGTH; i++)
     {
-      /* code */
       Serial.print(receivedMessage[i],HEX);
       Serial.print(" ");
     }

@@ -30,4 +30,6 @@ class UDPService
     char* getMessageFromMulticastServer(int bufferLength);
 
     char* getMessageFromServer(int bufferLenght);
+
+    void cleanUnnecessaryDataBytes(char* data, int beginPos, int endPos);
 };
