@@ -22,14 +22,20 @@ void UDPService::setupServer(IPAddress serverHostIp, int serverPort)
     this->serverPort = serverPort;
 }
 
-void UDPService::sendToServer(char buffer[])
+bool UDPService::sendToServer(char *buffer)
 {
-    if (!this->Udp)
+    bool sendingSuccessful = this->Udp.beginPacket(*this->serverHostIp, this->serverPort);
+    if (sendingSuccessful)
     {
-        this->Udp.beginPacket(*this->serverHostIp, this->serverPort);
+        // Serial.println("sending success");
         this->Udp.write(buffer);
         this->Udp.endPacket();
     }
+    else
+    {
+        Serial.println("send failed");
+    }
+    return sendingSuccessful;
 };
 
 char *UDPService::getPrivateMessageFromServer(int bufferLength)
@@ -69,7 +75,7 @@ char *UDPService::getMessageFromMulticastServer(int bufferLength)
         int receivedBytesLength = this->UdpMulti.read(incomingPacket, bufferLength);
         if (receivedBytesLength > 0)
         {
-            cleanUnnecessaryDataBytes(incomingPacket,receivedBytesLength,bufferLength);
+            cleanUnnecessaryDataBytes(incomingPacket, receivedBytesLength, bufferLength);
         }
         // Serial.printf("UDP Paket Inhalt: %s\n", incomingPacket);
         return incomingPacket;
@@ -80,8 +86,8 @@ char *UDPService::getMessageFromMulticastServer(int bufferLength)
 char *UDPService::getMessageFromServer(int bufferLength)
 {
     //last initiated message will have higher priority and be caught
-    char* receivedMulti = getMessageFromMulticastServer(bufferLength);
-    char* receivedPrivate = getPrivateMessageFromServer(bufferLength);
+    char *receivedMulti = getMessageFromMulticastServer(bufferLength);
+    char *receivedPrivate = getPrivateMessageFromServer(bufferLength);
     if (receivedPrivate != NULL)
     {
         return receivedPrivate;
@@ -98,9 +104,9 @@ WiFiUDP UDPService::getUdp()
     return this->Udp;
 }
 
-
 //TODO: create bibliothek for processing raw data, add this function to it
-void UDPService::cleanUnnecessaryDataBytes(char* data, int beginPos, int endPos){
+void UDPService::cleanUnnecessaryDataBytes(char *data, int beginPos, int endPos)
+{
     for (int i = beginPos; i < endPos; i++)
     {
         /* code */

@@ -23,7 +23,7 @@ class UDPService
     void setupListenPort(int listenPort);
 
     void setupServer(IPAddress serverHostIp, int serverPort);
-    void sendToServer(char buffer[]);
+    bool sendToServer(char *buffer);
     char* getPrivateMessageFromServer(int bufferLength); //private message to one client only
 
     void setupMulticastServer(IPAddress multicastHostIp, int MulticastPort);
