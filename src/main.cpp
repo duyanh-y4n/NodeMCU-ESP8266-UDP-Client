@@ -9,12 +9,12 @@ const char *SSID = "TP-LINK_D8BA";
 const char *PASS = "35581338";
 ////////// UDP Konfigration ///////////////
 const int LOCAL_LISTEN_PORT = 8080; //UDP port
-const int MAX_BUFFER_LENGTH = 25;
+const int MAX_BUFFER_LENGTH = 25; //Max. Länge des Pakets
 
 IPAddress multicastIP(224, 0, 0, 0); //IP des Multicast
 const int MULTICAST_PORT = 8081;     //IP des Multicast
-byte SERVER_IP[4];                   //IP des Servers
-int SERVER_PORT;                     //PORT des Servers
+// byte SERVER_IP[4];                   //IP des Servers
+// int SERVER_PORT;                     //PORT des Servers
 
 /////////// WIFI Und UDP erstellen/////////
 WifiService wifi(SSID, PASS);

@@ -1,5 +1,8 @@
 #include <WifiService.h>
 
+
+//TODO: refactor, remove all serial print command
+// this class is a core class, should not have any print
 WifiService::WifiService(/* args */)
 {
     this->ssid = "";

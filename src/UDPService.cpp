@@ -82,13 +82,13 @@ char *UDPService::getMessageFromServer(int bufferLength)
     //last initiated message will have higher priority and be caught
     char* receivedMulti = getMessageFromMulticastServer(bufferLength);
     char* receivedPrivate = getPrivateMessageFromServer(bufferLength);
-    if (receivedMulti != NULL)
-    {
-        return receivedMulti;
-    }
     if (receivedPrivate != NULL)
     {
         return receivedPrivate;
+    }
+    if (receivedMulti != NULL)
+    {
+        return receivedMulti;
     }
     return NULL;
 }

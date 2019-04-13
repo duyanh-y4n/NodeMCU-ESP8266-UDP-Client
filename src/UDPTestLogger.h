@@ -1,6 +1,8 @@
 #include <Arduino.h>
 #include <UDPService.h>
 
+
+//TODO: still dont know if i need this class :/
 class UDPTestLogger
 {
 private:
