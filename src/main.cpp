@@ -29,21 +29,24 @@ void setup()
   Serial.begin(9600);
   wifi.connectToWifi();
   Udp.setupListenPort(LOCAL_LISTEN_PORT);
-  // Udp.connectToLeitSystemServer(multicastIP, MULTICAST_PORT);
-  Udp.setupMulticastServer(multicastIP,MULTICAST_PORT);
-  Udp.setupServer(ServerIP,Server_PORT);
+  Udp.connectToLeitSystemServer(multicastIP, MULTICAST_PORT);
+  // Udp.setupMulticastServer(multicastIP,MULTICAST_PORT);
+  // Udp.setupServer(ServerIP,Server_PORT);
   Udp.sendToServer("Hi From Node ");
 }
 
 void loop()
 {
-  char* received = Udp.getMessageFromMulticastServer(20);
-  if (received!=NULL)
+  // Udp.getMessageFromMulticastServer(20);
+  char* received = Udp.getMessageFromServer(MAX_BUFFER_LENGTH);
+  if (received!=NULL && received[0]==0x11)
   {
-    /* code */
     Serial.println(received);
-    delete received;
+    for (int i = 0; i < MAX_BUFFER_LENGTH; i++)
+    {
+      Serial.print(received[i],HEX);
+      Serial.print(" ");
+    }
+      Serial.println();
   }
-  delay(1000);
-  
 }

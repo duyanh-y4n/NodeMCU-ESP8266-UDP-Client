@@ -3,7 +3,6 @@
 UDPService::UDPService()
 {
     this->serverPort = DEFAULT_PORT;
-    this->messageFromMulticast = new char[DEFAULT_MAX_BUFFER_LENGTH];
 }
 
 UDPService::~UDPService()
@@ -54,6 +53,7 @@ char* UDPService::getPrivateMessageFromServer(int bufferLength)
         // Serial.printf("UDP packet content: %s\n", incomingPacket);
         return incomingPacket;
     }
+    delete incomingPacket;
     return NULL;
 };
 
@@ -79,6 +79,7 @@ char* UDPService::getMessageFromMulticastServer(int bufferLength)
         // Serial.printf("UDP Paket content: %s\n", incomingPacket);
         return incomingPacket;
     }
+    delete incomingPacket;
     return NULL;
 }
 
@@ -89,12 +90,10 @@ char* UDPService::getMessageFromServer(int bufferLength)
     char *receivedPrivate = getPrivateMessageFromServer(bufferLength);
     if (receivedPrivate != NULL)
     {
-        delete receivedMulti;
         return receivedPrivate;
     }
     if (receivedMulti != NULL)
     {
-        delete receivedPrivate;
         return receivedMulti;
     }
     return NULL;

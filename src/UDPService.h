@@ -13,7 +13,6 @@ class UDPService
     WiFiUDP Udp;
     WiFiUDP UdpMulti;
     int listenPort;
-    char* messageFromMulticast;
 
   public:
     UDPService();
