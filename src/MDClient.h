@@ -5,6 +5,8 @@ class MDClient:public UDPService
 {
 private:
     /* data */
+    IPAddress *serverIP;
+    int port;
 public:
     MDClient(/* args */);
     ~MDClient();

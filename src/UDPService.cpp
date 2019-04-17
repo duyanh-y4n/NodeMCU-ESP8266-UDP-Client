@@ -24,7 +24,7 @@ void UDPService::setupServer(IPAddress serverHostIp, int serverPort)
 
 bool UDPService::sendToServer(char *buffer)
 {
-    bool sendingSuccessful = this->Udp.beginPacket(*this->serverHostIp, this->serverPort);
+    bool sendingSuccessful = this->Udp.beginPacket(this->serverHostIp, this->serverPort);
     if (sendingSuccessful)
     {
         // Serial.println("sending success");
@@ -60,7 +60,7 @@ char *UDPService::getPrivateMessageFromServer(int bufferLength)
 
 void UDPService::setupMulticastServer(IPAddress multicastHostIp, int multicastPort)
 {
-    this->multicastHostIp = multicastHostIp;
+    *this->multicastHostIp = multicastHostIp;
     this->multicastPort = multicastPort;
     this->UdpMulti.beginMulticast(WiFi.localIP(), this->multicastHostIp, this->multicastPort);
 };
