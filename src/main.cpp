@@ -16,7 +16,7 @@ const int MAX_BUFFER_LENGTH = 25;   //Max. Länge des Pakets
 IPAddress multicastIP(224, 0, 0, 0); //IP des Multicast
 const int MULTICAST_PORT = 8081;     //IP des Multicast
 
-IPAddress *ServerIP; //IP des Server Rechners
+IPAddress ServerIP(192,168,0,104); //IP des Server Rechners
 const int Server_PORT = 8080;         // Server Port
 
 /////////// WIFI Und UDP erstellen/////////
@@ -29,17 +29,20 @@ void setup()
   Serial.begin(9600);
   wifi.connectToWifi();
   Udp.setupListenPort(LOCAL_LISTEN_PORT);
-  Udp.connectToLeitSystemServer(multicastIP, MULTICAST_PORT);
+  // Udp.connectToLeitSystemServer(multicastIP, MULTICAST_PORT);
+  Udp.setupMulticastServer(multicastIP,MULTICAST_PORT);
+  Udp.setupServer(ServerIP,Server_PORT);
   Udp.sendToServer("Hi From Node ");
 }
 
 void loop()
 {
-  char* received = Udp.getMessageFromServer(20);
+  char* received = Udp.getMessageFromMulticastServer(20);
   if (received!=NULL)
   {
     /* code */
     Serial.println(received);
+    delete received;
   }
   delay(1000);
   

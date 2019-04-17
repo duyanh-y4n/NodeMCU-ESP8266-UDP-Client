@@ -1,7 +1,7 @@
 #include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
 #define DEFAULT_PORT 8080
-#define DEFAULT_MAX_BUFFER_LENGTH 255
+#define DEFAULT_MAX_BUFFER_LENGTH 30
 
 class UDPService
 {
@@ -13,6 +13,7 @@ class UDPService
     WiFiUDP Udp;
     WiFiUDP UdpMulti;
     int listenPort;
+    char* messageFromMulticast;
 
   public:
     UDPService();

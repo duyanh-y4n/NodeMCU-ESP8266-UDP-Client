@@ -3,6 +3,7 @@
 UDPService::UDPService()
 {
     this->serverPort = DEFAULT_PORT;
+    this->messageFromMulticast = new char[DEFAULT_MAX_BUFFER_LENGTH];
 }
 
 UDPService::~UDPService()
@@ -37,7 +38,7 @@ bool UDPService::sendToServer(char *buffer)
     return sendingSuccessful;
 };
 
-char *UDPService::getPrivateMessageFromServer(int bufferLength)
+char* UDPService::getPrivateMessageFromServer(int bufferLength)
 {
     int packetSize = this->Udp.parsePacket();
     char *incomingPacket = new char[DEFAULT_MAX_BUFFER_LENGTH];
@@ -63,7 +64,7 @@ void UDPService::setupMulticastServer(IPAddress multicastHostIp, int multicastPo
     this->UdpMulti.beginMulticast(WiFi.localIP(), this->multicastHostIp, this->multicastPort);
 };
 
-char *UDPService::getMessageFromMulticastServer(int bufferLength)
+char* UDPService::getMessageFromMulticastServer(int bufferLength)
 {
     int packetSize = this->UdpMulti.parsePacket();
     char *incomingPacket = new char[DEFAULT_MAX_BUFFER_LENGTH];
@@ -81,17 +82,19 @@ char *UDPService::getMessageFromMulticastServer(int bufferLength)
     return NULL;
 }
 
-char *UDPService::getMessageFromServer(int bufferLength)
+char* UDPService::getMessageFromServer(int bufferLength)
 {
     //last initiated message will have higher priority and be caught
     char *receivedMulti = getMessageFromMulticastServer(bufferLength);
     char *receivedPrivate = getPrivateMessageFromServer(bufferLength);
     if (receivedPrivate != NULL)
     {
+        delete receivedMulti;
         return receivedPrivate;
     }
     if (receivedMulti != NULL)
     {
+        delete receivedPrivate;
         return receivedMulti;
     }
     return NULL;
@@ -102,7 +105,7 @@ WiFiUDP UDPService::getUdp()
     return this->Udp;
 }
 
-//TODO: create bibliothek for processing raw data, add this function to it
+//TODO: create lib for processing raw data, add this function to it
 void UDPService::cleanUnnecessaryDataBytes(char *data, int beginPos, int endPos)
 {
     for (int i = beginPos; i < endPos; i++)
