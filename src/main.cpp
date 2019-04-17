@@ -39,7 +39,7 @@ void loop()
   if (received!=NULL)
   {
     /* code */
-    // Serial.println(received,HEX);
+    Serial.println(received);
   }
   delay(1000);
   

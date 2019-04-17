@@ -2,7 +2,6 @@
 
 UDPService::UDPService()
 {
-    // this->serverHostIp = new IPAddress(0,0,0,0);
     this->serverPort = DEFAULT_PORT;
 }
 
@@ -40,19 +39,18 @@ bool UDPService::sendToServer(char *buffer)
 
 char *UDPService::getPrivateMessageFromServer(int bufferLength)
 {
-    //TODO: refactor, get from server
     int packetSize = this->Udp.parsePacket();
     char *incomingPacket = new char[DEFAULT_MAX_BUFFER_LENGTH];
     if (packetSize)
     {
-        // Serial.printf("Empfängt %d bytes von %s, port %d\n", packetSize, Udp.remoteIP().toString().c_str(), Udp.remotePort());
+        // Serial.printf("Received %d bytes from %s, port %d\n", packetSize, Udp.remoteIP().toString().c_str(), Udp.remotePort());
         Serial.println();
         int receivedBytesLength = this->Udp.read(incomingPacket, bufferLength);
         if (receivedBytesLength > 0)
         {
             cleanUnnecessaryDataBytes(incomingPacket, receivedBytesLength, bufferLength);
         }
-        // Serial.printf("UDP Paket Inhalt: %s\n", incomingPacket);
+        // Serial.printf("UDP packet content: %s\n", incomingPacket);
         return incomingPacket;
     }
     return NULL;
@@ -71,13 +69,13 @@ char *UDPService::getMessageFromMulticastServer(int bufferLength)
     char *incomingPacket = new char[DEFAULT_MAX_BUFFER_LENGTH];
     if (packetSize)
     {
-        // Serial.printf("Empfängt %d bytes von %s, port %d\n", packetSize, Udp.remoteIP().toString().c_str(), Udp.remotePort());
+        // Serial.printf("Received %d bytes from %s, port %d\n", packetSize, Udp.remoteIP().toString().c_str(), Udp.remotePort());
         int receivedBytesLength = this->UdpMulti.read(incomingPacket, bufferLength);
         if (receivedBytesLength > 0)
         {
             cleanUnnecessaryDataBytes(incomingPacket, receivedBytesLength, bufferLength);
         }
-        // Serial.printf("UDP Paket Inhalt: %s\n", incomingPacket);
+        // Serial.printf("UDP Paket content: %s\n", incomingPacket);
         return incomingPacket;
     }
     return NULL;

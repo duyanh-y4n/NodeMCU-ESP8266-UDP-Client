@@ -22,9 +22,8 @@ WifiService::~WifiService()
 void WifiService::connectToWifi()
 {
     Serial.println();
-    Serial.print("Versuche Verbindung zum AP mit der SSID=");
-    Serial.print(ssid);
-    Serial.println(" herzustellen");
+    Serial.print("Connecting to AP with SSID=");
+    Serial.println(ssid);
 
     WiFi.begin(ssid, password);
     /*Solange keine Verbindung zu einem AccessPoint (AP) aufgebaut wurde*/
@@ -39,11 +38,11 @@ void WifiService::connectToWifi()
 
 void WifiService::printConnectionInfo()
 {
-    Serial.print("Verbunden mit IP ");
+    Serial.print("Connected! IP: ");
     Serial.println(WiFi.localIP());
     /*Signalstärke des AP*/
     long rssi = WiFi.RSSI();
-    Serial.print("Signalstaerke(RSSI) des AP:");
+    Serial.print("Signal strength of this AP:");
     Serial.print(rssi);
     Serial.println(" dBm");
     Serial.println();
