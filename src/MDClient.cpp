@@ -14,7 +14,7 @@ void MDClient::connectToLeitSystemServer(IPAddress multicastIP, int multicastPor
     Serial.println("Looking for server adress...");
     while (true)
     {
-        delay(1000);
+        delay(500);
         ServerInfo = getMessageFromMulticastServer(6); //4 bytes for IP, 2 bytes for port number
         if (ServerInfo != NULL)
         {
