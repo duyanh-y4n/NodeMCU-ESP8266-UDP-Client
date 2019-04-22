@@ -37,6 +37,25 @@ bool UDPService::sendToServer(char *buffer)
     return sendingSuccessful;
 };
 
+bool UDPService::sendToServer(char *buffer, int bufferLength){
+    bool sendingSuccessful = this->Udp.beginPacket(this->serverHostIp, this->serverPort);
+    if (sendingSuccessful)
+    {
+        // Serial.println("sending success");
+        for (int i = 0; i < 20; i++)
+        {
+            this->Udp.write(buffer[i]);
+        }
+        
+        this->Udp.endPacket();
+    }
+    else
+    {
+        Serial.println("send failed");
+    }
+    return sendingSuccessful;
+}
+
 char* UDPService::getPrivateMessageFromServer(int bufferLength)
 {
     int packetSize = this->Udp.parsePacket();
