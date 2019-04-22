@@ -14,7 +14,7 @@ void MDClient::connectToLeitSystemServer(IPAddress multicastIP, int multicastPor
     Serial.println("Looking for server adress...");
     while (true)
     {
-        delay(500);
+        delay(100);
         ServerInfo = getMessageFromMulticastServer(6); //4 bytes for IP, 2 bytes for port number
         if (ServerInfo != NULL)
         {
@@ -37,7 +37,7 @@ void MDClient::connectToLeitSystemServer(IPAddress multicastIP, int multicastPor
     }
     Serial.println("Connected! Can now send message to server");
     // sendToServer("New Client!!");
-    delay(500);
+    delay(100);
 }
 
 void MDClient::registerToSystem(char* clientName){
@@ -77,4 +77,8 @@ void MDClient::registerToSystem(char* clientName){
     Serial.print("Your ID is: ");
     Serial.print(this->id, HEX);
     Serial.println(" (in HEX)");
+}
+
+char MDClient::getId(){
+    return this->id;
 }
