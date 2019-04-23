@@ -29,7 +29,7 @@ void MDClient::connectToLeitSystemServer(IPAddress multicastIP, int multicastPor
             Serial.print(":");
             this->port = (int)ServerInfo[4] * 256 + (int)ServerInfo[5];
             Serial.println(port);
-            this->serverIP = new IPAddress(192, 168, 0, 104);
+            this->serverIP = new IPAddress(ServerInfo[0], ServerInfo[1], ServerInfo[2], ServerInfo[3]);
             setupServer(*this->serverIP, this->port);
             break;
         }
@@ -42,6 +42,9 @@ void MDClient::connectToLeitSystemServer(IPAddress multicastIP, int multicastPor
 
 void MDClient::registerToSystem(char* clientName){
     char *message = new char[Message::MESSAGE_LENGTH]();
+    Serial.println("Registering to server...");
+    Serial.print("Client Name: ");
+    Serial.println(clientName);
     for (int i = 0; i < Message::HEADER_LENGTH; i++)
     {
         message[i] = Message::REGISTER_REQ_HEADER[i];
@@ -51,14 +54,15 @@ void MDClient::registerToSystem(char* clientName){
         message[i+Message::HEADER_LENGTH] = clientName[i];
     }
 
-    //Test log
-    // for (int i = 0; i < Message::MESSAGE_LENGTH; i++)
-    // {
-        // Serial.print(message[i],HEX);
-        // Serial.print(",");
-    // }
+    // Test log
+    for (int i = 0; i < Message::MESSAGE_LENGTH; i++)
+    {
+        Serial.print(message[i],HEX);
+        Serial.print(",");
+    }
     sendToServer(message,Message::MESSAGE_LENGTH);
     delete message;
+    Serial.println("sent to server");
 
     //wait for given id from server as response
     while (true)
@@ -71,9 +75,7 @@ void MDClient::registerToSystem(char* clientName){
         }
     }
     
-    Serial.println("Registering to server...");
-    Serial.print("Client Name: ");
-    Serial.println(clientName);
+    
     Serial.print("Your ID is: ");
     Serial.print(this->id, HEX);
     Serial.println(" (in HEX)");

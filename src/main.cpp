@@ -7,10 +7,10 @@
 #include "MDClient.h"
 
 ////////// Wifi Konfiguration /////////////
-const char *SSID = "TP-LINK_D8BA";
-const char *PASS = "35581338";
-// const char *SSID = "Y4NAP";
-// const char *PASS = "12312345";
+// const char *SSID = "TP-LINK_D8BA";
+// const char *PASS = "35581338";
+const char *SSID = "Y4NAP";
+const char *PASS = "12312345";
 
 ////////// LeitSystemClient Konfigration ///////////////
 const int LOCAL_LISTEN_PORT = 8080; //LeitSystemClient port
