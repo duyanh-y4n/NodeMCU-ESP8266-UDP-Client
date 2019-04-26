@@ -33,14 +33,14 @@ void MDClient::connectToLeitSystemServer(IPAddress multicastIP, int multicastPor
             setupServer(*this->serverIP, this->port);
             break;
         }
-
     }
     Serial.println("Connected! Can now send message to server");
     // sendToServer("New Client!!");
     delay(100);
 }
 
-void MDClient::registerToSystem(char* clientName){
+void MDClient::registerToSystem(char *clientName)
+{
     char *message = new char[Message::MESSAGE_LENGTH]();
     Serial.println("Registering to server...");
     Serial.print("Client Name: ");
@@ -49,20 +49,17 @@ void MDClient::registerToSystem(char* clientName){
     {
         message[i] = Message::REGISTER_REQ_HEADER[i];
     }
-    for (int i = 0; (i < Message::BODY_LENGTH && i<(int)strlen(clientName)); i++)
+    for (int i = 0; (i < Message::BODY_LENGTH && i < (int)strlen(clientName)); i++)
     {
-        message[i+Message::HEADER_LENGTH] = clientName[i];
+        message[i + Message::HEADER_LENGTH] = clientName[i];
     }
 
     // Test log
-    for (int i = 0; i < Message::MESSAGE_LENGTH; i++)
-    {
-        Serial.print(message[i],HEX);
-        Serial.print(",");
-    }
-    sendToServer(message,Message::MESSAGE_LENGTH);
+    Serial.println("Sending Register request");
+    showMessage(message);
+
+    sendToServer(message, Message::MESSAGE_LENGTH);
     delete message;
-    Serial.println("sent to server");
 
     //wait for given id from server as response
     while (true)
@@ -74,13 +71,53 @@ void MDClient::registerToSystem(char* clientName){
             break;
         }
     }
-    
-    
+
     Serial.print("Your ID is: ");
     Serial.print(this->id, HEX);
     Serial.println(" (in HEX)");
+    Serial.println();
 }
 
-char MDClient::getId(){
+char MDClient::getId()
+{
     return this->id;
+}
+
+void MDClient::prepareHeader()
+{
+    for (int i = 0; i < Message::HEADER_LENGTH; i++)
+    {
+        this->header[i] = Message::DEFAULT_CARSTATE_REQ_HEADER[i];
+    }
+    this->header[2] = this->id;
+}
+
+void MDClient::sendSignalToServer(char *carState)
+{
+    char *message = new char[Message::MESSAGE_LENGTH];
+    cleanUnnecessaryDataBytes(message, Message::HEADER_LENGTH, Message::MESSAGE_LENGTH);
+    Serial.println();
+    Serial.println("Sending carState to server");
+
+    for (int i = 0; i < Message::HEADER_LENGTH; i++)
+    {
+        message[i] = this->header[i];
+    }
+    for (int i = 0; i < Message::CAR_STATE_BODY_LENGTH; i++)
+    {
+        message[Message::HEADER_LENGTH + i] = carState[i];
+    }
+    showMessage(message);
+    sendToServer(message, Message::MESSAGE_LENGTH);
+    delete message;
+}
+
+void MDClient::showMessage(char *message)
+{
+    for (int i = 0; i < Message::MESSAGE_LENGTH; i++)
+    {
+        Serial.print(message[i], HEX);
+        Serial.print(",");
+    }
+    Serial.println();
 }

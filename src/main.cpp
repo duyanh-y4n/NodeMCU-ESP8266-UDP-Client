@@ -5,12 +5,13 @@
 #include <WiFiUdp.h>
 #include "WifiService.h"
 #include "MDClient.h"
+#include "LeitSystemMessage.hpp"
 
 ////////// Wifi Konfiguration /////////////
-// const char *SSID = "TP-LINK_D8BA";
-// const char *PASS = "35581338";
-const char *SSID = "Y4NAP";
-const char *PASS = "12312345";
+const char *SSID = "TP-LINK_D8BA";
+const char *PASS = "35581338";
+// const char *SSID = "Y4NAP";
+// const char *PASS = "12312345";
 
 ////////// LeitSystemClient Konfigration ///////////////
 const int LOCAL_LISTEN_PORT = 8080; //LeitSystemClient port
@@ -39,11 +40,15 @@ void setup()
   LeitSystemClient.connectToLeitSystemServer(multicastIP, MULTICAST_PORT);
   LeitSystemClient.registerToSystem(clientName);
   id = LeitSystemClient.getId();
+  LeitSystemClient.prepareHeader();
+  delay(500);
 }
 
 void loop()
 {
   // LeitSystemClient.getMessageFromMulticastServer(20);
+  LeitSystemClient.sendSignalToServer(Message::EXAMPLE_CARSTATE_REQ_BODY);
+  delay(4000);
   char* received = LeitSystemClient.getMessageFromServer(MAX_BUFFER_LENGTH);
   if (received!=NULL && received[0]==0x11)
   {
