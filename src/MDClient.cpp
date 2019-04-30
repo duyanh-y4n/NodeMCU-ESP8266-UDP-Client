@@ -41,7 +41,7 @@ void MDClient::connectToLeitSystemServer(IPAddress multicastIP, int multicastPor
 
 void MDClient::registerToSystem(char *clientName)
 {
-    char *message = new char[Message::MESSAGE_LENGTH]();
+    char *message = new char[Message::MESSAGE_LENGTH];
     Serial.println("Registering to server...");
     Serial.print("Client Name: ");
     Serial.println(clientName);
@@ -59,13 +59,13 @@ void MDClient::registerToSystem(char *clientName)
     showMessage(message);
 
     sendToServer(message, Message::MESSAGE_LENGTH);
-    delete message;
+    delete [] message;
 
     //wait for given id from server as response
     while (true)
     {
         char *received = getPrivateMessageFromServer(Message::MESSAGE_LENGTH);
-        if (received != NULL && Message::isResponseFromServer(received))
+        if (received != NULL && Message::isRegisterResponseFromServer(received))
         {
             this->id = received[Message::HEADER_LENGTH];
             break;
@@ -109,7 +109,7 @@ void MDClient::sendSignalToServer(char *carState)
     }
     showMessage(message);
     sendToServer(message, Message::MESSAGE_LENGTH);
-    delete message;
+    delete [] message;
 }
 
 void MDClient::showMessage(char *message)

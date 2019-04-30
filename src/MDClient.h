@@ -1,6 +1,7 @@
 #include"UDPService.h"
 #include<WiFiClient.h>
 
+// Class for Mechatronisches Design's nodeMCU client
 class MDClient:public UDPService
 {
 private:

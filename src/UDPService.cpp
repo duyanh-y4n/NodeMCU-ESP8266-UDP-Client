@@ -72,7 +72,7 @@ char* UDPService::getPrivateMessageFromServer(int bufferLength)
         // Serial.printf("UDP packet content: %s\n", incomingPacket);
         return incomingPacket;
     }
-    delete incomingPacket;
+    delete [] incomingPacket;
     return NULL;
 };
 
@@ -98,7 +98,7 @@ char* UDPService::getMessageFromMulticastServer(int bufferLength)
         // Serial.printf("UDP Paket content: %s\n", incomingPacket);
         return incomingPacket;
     }
-    delete incomingPacket;
+    delete [] incomingPacket;
     return NULL;
 }
 
