@@ -1,7 +1,7 @@
 namespace {
     namespace Message{
         // Message 
-        const int MESSAGE_LENGTH = 20;
+        const int MESSAGE_LENGTH = 8;
 
         // Message header [MessType][ClientType][ClientID][ReqID]
         const int REQUEST_ID_POSITION = 3;
