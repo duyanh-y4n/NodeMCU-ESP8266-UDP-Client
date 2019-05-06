@@ -21,13 +21,13 @@ void UDPService::setupServer(IPAddress serverHostIp, int serverPort)
     this->serverPort = serverPort;
 }
 
-bool UDPService::sendToServer(char *buffer)
+bool UDPService::sendToServer(char *stringBuffer)
 {
     bool sendingSuccessful = this->Udp.beginPacket(this->serverHostIp, this->serverPort);
     if (sendingSuccessful)
     {
         // Serial.println("sending success");
-        this->Udp.write(buffer);
+        this->Udp.write(stringBuffer);
         this->Udp.endPacket();
     }
     else
