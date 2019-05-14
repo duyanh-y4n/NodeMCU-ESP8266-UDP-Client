@@ -5,7 +5,7 @@
 #include <WiFiUdp.h>
 #include "WifiService.h"
 #include "MDClient.h"
-#include "LeitSystemMessage.hpp"
+#include "LeitSystemMessage.cpp"
 #include <SoftwareSerial.h>
 
 ////////// Wifi Konfiguration /////////////
@@ -86,5 +86,6 @@ void loop()
     }
   // send back clearance signal from server to arduino
     arduinoSerial.write(clearance);
+    delay(100); // need this to prevent server overload
   }
 }

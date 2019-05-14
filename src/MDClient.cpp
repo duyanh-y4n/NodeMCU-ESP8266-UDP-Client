@@ -1,5 +1,5 @@
 #include "MDClient.h"
-#include "LeitSystemMessage.hpp"
+#include "LeitSystemMessage.cpp"
 
 MDClient::MDClient() {}
 

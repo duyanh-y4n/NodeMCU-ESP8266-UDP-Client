@@ -7,7 +7,7 @@ const int MESSAGE_LENGTH = 20;
 
 // Message header [MessType][ClientType][ClientID][ReqID]
 const int REQUEST_ID_BYTE_POSITION = 3;
-const int MESSAGETYPE_BYTE_POSITION = 3;
+const int MESSAGETYPE_BYTE_POSITION = 0;
 
 // standard header config
 const int HEADER_LENGTH = 4;
