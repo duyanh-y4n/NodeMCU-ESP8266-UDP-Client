@@ -61,7 +61,6 @@ void MDClient::registerToSystem(char *clientName)
     showMessage(message);
 
     sendToServer(message,Message::MESSAGE_LENGTH);
-    delete message;
 
     //wait for given id from server as response
     while (true)
@@ -96,7 +95,7 @@ void MDClient::prepareHeader()
 
 void MDClient::sendSignalToServer(char *carState)
 {
-    char *message = new char[Message::MESSAGE_LENGTH];
+    char message[Message::MESSAGE_LENGTH] = {0};
     cleanUnnecessaryDataBytes(message, Message::HEADER_LENGTH, Message::MESSAGE_LENGTH);
     Serial.println();
     Serial.println("Sending carState to server");
@@ -111,7 +110,7 @@ void MDClient::sendSignalToServer(char *carState)
     }
     showMessage(message);
     sendToServer(message, Message::MESSAGE_LENGTH);
-    delete message;
+    //delete message;
 }
 
 void MDClient::showMessage(char *message)
@@ -123,3 +122,4 @@ void MDClient::showMessage(char *message)
     }
     Serial.println();
 }
+

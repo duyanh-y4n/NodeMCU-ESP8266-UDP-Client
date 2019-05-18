@@ -20,7 +20,7 @@ const int CAR_STATE_BODY_LENGTH = 3;
 const int CLEARANCE_BYTE_POSITION_IN_MESSAGE = 4;
 
 // Message header [Position][Direction][Speed]
-char EXAMPLE_CARSTATE_REQ_BODY[CAR_STATE_BODY_LENGTH] = {0xA1, 0x01, 0x01};
+//char EXAMPLE_CARSTATE_REQ_BODY[CAR_STATE_BODY_LENGTH] = {0xA1, 0x01, 0x01};
 
 // RequestType
 const int REGISTER_REQ = 0x01;
