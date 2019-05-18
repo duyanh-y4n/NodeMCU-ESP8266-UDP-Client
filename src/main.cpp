@@ -69,7 +69,7 @@ void loop()
     int currentTime = millis();
     while (true)
     {
-      if (currentTime - millis() > 1000)
+      if (millis() - currentTime > 1000)
       { //resent message after 1s without response;
         Serial.println("No response, canceling request and return clearance 0");
         clearance = 0;
