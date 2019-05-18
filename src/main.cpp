@@ -61,14 +61,20 @@ void loop()
   // read from Arduino
   arduinoSerial.setTimeout(100);
   receivedSignalLength = arduinoSerial.readBytes(signal, Message::BODY_LENGTH);
-  if (receivedSignalLength>0)
+  if (receivedSignalLength > 0)
   {
     LeitSystemClient.sendSignalToServer(signal);
 
     //listen to server response
+    int currentTime = millis();
     while (true)
     {
-      
+      if (currentTime - millis() > 1000)
+      { //resent message after 1s without response;
+        Serial.println("No response, canceling request and return clearance 0");
+        clearance = 0;
+        break;
+      }
       response = LeitSystemClient.getPrivateMessageFromServer(Message::MESSAGE_LENGTH);
       if (response != NULL && response[3] == 0x02)
       {
@@ -84,7 +90,7 @@ void loop()
         break;
       }
     }
-  // send back clearance signal from server to arduino
+    // send back clearance signal from server to arduino
     arduinoSerial.write(clearance);
     delay(100); // need this to prevent server overload
   }
