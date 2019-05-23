@@ -22,7 +22,7 @@ IPAddress multicastIP(224, 0, 0, 0); //IP des Multicast
 const int MULTICAST_PORT = 8081;     //Port des Multicast
 
 ///////////Client Info/////////////////////
-char *clientName = "MDCar1"; //max 16 chars
+char *clientName = "Team test"; //max 16 chars
 int id;
 
 /////////// WIFI Und LeitSystemClient erstellen/////////
@@ -31,7 +31,7 @@ MDClient LeitSystemClient;
 
 /////////// Arduino signal ////////////////////////////
 SoftwareSerial arduinoSerial(13, 15); //pin d7 and d8
-char signal[Message::BODY_LENGTH] = {0, 0, 0, 0};
+// char signal[Message::BODY_LENGTH] = {0, 0, 0, 0};
 int receivedSignalLength = 0;
 
 /////////// Server response ///////////////////////////
@@ -59,6 +59,7 @@ void setup()
 void loop()
 {
   // read from Arduino
+  char signal[Message::BODY_LENGTH] = {0, 0, 0, 0};
   arduinoSerial.setTimeout(100);
   receivedSignalLength = arduinoSerial.readBytes(signal, Message::BODY_LENGTH);
   if (receivedSignalLength > 0)
