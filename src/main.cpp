@@ -1,3 +1,4 @@
+// anyone who uses VSC-Platform.io as IDE should use this library and change this file name to main.cpp
 #include <Arduino.h>
 
 // needed lib
@@ -38,6 +39,9 @@ int receivedSignalLength = 0;
 char *response;
 char clearance;
 
+int Timer1 = 0;
+int Timer2 = 0;
+
 // Testprogramm zum Hören vom server
 void setup()
 {
@@ -59,21 +63,31 @@ void setup()
 void loop()
 {
   // read from Arduino
-  char signal[Message::BODY_LENGTH] = {0, 0, 0, 0};
+  char signal[6] = {0, 0, 0, 0, 0, 0};
   arduinoSerial.setTimeout(100);
-  receivedSignalLength = arduinoSerial.readBytes(signal, Message::BODY_LENGTH);
+  receivedSignalLength = arduinoSerial.readBytes(signal, Message::CAR_STATE_LENGTH);
   if (receivedSignalLength > 0)
   {
-    LeitSystemClient.sendSignalToServer(signal);
+    // for (int i = 0; i < receivedSignalLength; i++)
+    // {
+    //   /* code */
+    //   Serial.print(signal[i], HEX);
+    //   Serial.print(",");
+    // }
+    // Serial.println();
+    // clearance = (char)0x01;
+    // Serial.println();
 
-    //listen to server response
+    Serial.println("---------------------------------------------");
     int currentTime = millis();
+    LeitSystemClient.sendSignalToServer(signal);
     while (true)
     {
       if (millis() - currentTime > 1000)
       { //resent message after 1s without response;
         Serial.println("No response, canceling request and return clearance 0");
         clearance = 0;
+        currentTime = millis();
         break;
       }
       response = LeitSystemClient.getPrivateMessageFromServer(Message::MESSAGE_LENGTH);
@@ -91,8 +105,20 @@ void loop()
         break;
       }
     }
-    // send back clearance signal from server to arduino
     arduinoSerial.write(clearance);
-    // delay(100); // need this to prevent server overload
+    Serial.print("clearance: ");
+    Serial.print(clearance, HEX);
+    Serial.println();
+    Timer1 = millis();
+  }
+  if (millis() - Timer1 > 3000 && millis() - Timer2 > 1000)
+  {
+    Timer2 = millis();
+    clearance = (char)0x00;
+    Serial.println();
+    Serial.println("No signal from Arduino: ");
+    Serial.print("sending back clearance: ");
+    arduinoSerial.write(clearance); //TODO: bug when this line is not there
+    Serial.print(clearance, HEX);
   }
 }
