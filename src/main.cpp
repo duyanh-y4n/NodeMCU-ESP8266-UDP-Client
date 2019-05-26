@@ -93,6 +93,6 @@ void loop()
     }
     // send back clearance signal from server to arduino
     arduinoSerial.write(clearance);
-    delay(100); // need this to prevent server overload
+    // delay(100); // need this to prevent server overload
   }
 }
