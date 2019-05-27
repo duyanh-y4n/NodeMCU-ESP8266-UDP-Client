@@ -23,7 +23,7 @@ IPAddress multicastIP(224, 0, 0, 0); //IP des Multicast
 const int MULTICAST_PORT = 8081;     //Port des Multicast
 
 ///////////Client Info/////////////////////
-char *clientName = "Team test"; //max 16 chars
+char *clientName = "Team 10"; //max 16 chars
 int id;
 
 /////////// WIFI Und LeitSystemClient erstellen/////////
@@ -102,6 +102,7 @@ void loop()
         }
         Serial.println();
         clearance = response[Message::CLEARANCE_BYTE_POSITION_IN_MESSAGE];
+        Serial.println(clearance, DEC);
         break;
       }
     }
@@ -117,8 +118,8 @@ void loop()
     clearance = (char)0x00;
     Serial.println();
     Serial.println("No signal from Arduino: ");
-    Serial.print("sending back clearance: ");
-    arduinoSerial.write(clearance); //TODO: bug when this line is not there
+    // Serial.print("sending back clearance: ");
+    //arduinoSerial.write(clearance); //TODO: bug when this line is not there
     Serial.print(clearance, HEX);
   }
 }
