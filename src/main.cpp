@@ -68,16 +68,6 @@ void loop()
   receivedSignalLength = arduinoSerial.readBytes(signal, Message::CAR_STATE_LENGTH);
   if (receivedSignalLength > 0)
   {
-    // for (int i = 0; i < receivedSignalLength; i++)
-    // {
-    //   /* code */
-    //   Serial.print(signal[i], HEX);
-    //   Serial.print(",");
-    // }
-    // Serial.println();
-    // clearance = (char)0x01;
-    // Serial.println();
-
     Serial.println("---------------------------------------------");
     int currentTime = millis();
     LeitSystemClient.sendSignalToServer(signal);
@@ -118,8 +108,6 @@ void loop()
     clearance = (char)0x00;
     Serial.println();
     Serial.println("No signal from Arduino: ");
-    // Serial.print("sending back clearance: ");
-    //arduinoSerial.write(clearance); //TODO: bug when this line is not there
     Serial.print(clearance, HEX);
   }
 }
